@@ -4,8 +4,8 @@
 #include <stdlib.h>
 #include <immintrin.h>
 
-int n = 10240 ; 
-int repetition = 100000; 
+int n = 102400 ; 
+int repetition = 100; 
 
 typedef struct{
 	float x , y  ; 
@@ -78,7 +78,7 @@ int main(){
 	for (int j = 0 ; j < repetition ; j++){
 	
 		for (int i = 0 ; i < n ; i++){
-			sum += v_aos[i].x * v_aos[i].y ; 
+			sum += v_aos[i].x ; 
 		}
 	}
 	double after = (double)rdtsc();
@@ -91,34 +91,16 @@ int main(){
 	for (int j = 0 ; j < repetition ; j++){
 
 		for (int i = 0 ; i < n ; i++){
-			sum += v_x[i] * v_y[i] ; 
+			sum += v_x[i] ; 
 		}
 	}
 	after = (double)rdtsc();
 	printf("SOA time : %lf\n", ((after - before)/repetition));
 	printf("SOA sum : %f\n", sum) ; 
 	
-	// bad intrinsic version 
-	__m256 rx, ry,rp, rs, rx2, ry2, rp2, rs2, rx3, ry3, rp3, rs3, rx4, ry4, rp4, rs4 ;
-	sum = 0 ;                
-	before = (double)rdtsc();
-	for (int j = 0 ; j < repetition ; j++){
-		for ( int i = 0 ; i < n ; i+=8){
-			rx = _mm256_load_ps(&v_x_al[i]);
-			ry = _mm256_load_ps(&v_y_al[i] );
-			rp = _mm256_mul_ps(rx, ry) ; 
-			_mm256_store_ps(result, rp) ; 
-			for (int k = 0 ; k < 8 ; k++){
-				//printf("%f\n", result[i]);
-				sum += result[k] ; 		
-			}	
-		} 
-	}
-	after = (double)rdtsc();
-	printf("bad intrinsic time : %lf\n", ((after - before)/repetition));
-	printf("bad intrinsic sum : %f\n", sum) ; 	
-	
-	
+
+	__m256 rx, rp, rs, rx2,  rp2, rs2, rx3, rp3, rs3, rx4,  rp4, rs4 ;	
+	__m256 rx5, rp5, rs5, rx6,  rp6, rs6, rx7, rp7, rs7, rx8, rp8, rs8 ;
 	// fma intrinsic version 
 	sum = 0 ;                             
 	before = (double)rdtsc();
@@ -126,9 +108,7 @@ int main(){
 	rs = _mm256_setzero_ps() ;	
 		for ( int i = 0 ; i < n ; i+=8){
 			rx = _mm256_load_ps(&v_x_al[i]);
-			ry = _mm256_load_ps(&v_y_al[i] );
-			rp = _mm256_mul_ps(rx, ry) ; 
-			rs = _mm256_add_ps(rp, rs);
+			rs = _mm256_add_ps(rx, rs);
 		} 
 		_mm256_store_ps(result, rs) ; 		
 		for (int k = 0 ; k < 8 ; k++){
@@ -150,14 +130,10 @@ int main(){
 	rs2 = _mm256_setzero_ps() ;
 		for ( int i = 0 ; i < n ; i+=16){
 			rx = _mm256_load_ps(&v_x_al[i]);
-			ry = _mm256_load_ps(&v_y_al[i] );
-			rp = _mm256_mul_ps(rx, ry) ; 
-			rs = _mm256_add_ps(rp, rs);
+			rs = _mm256_add_ps(rx, rs);
 			
-			rx2 = _mm256_load_ps(&v_x_al[i+8]);
-			ry2 = _mm256_load_ps(&v_y_al[i+8] );
-			rp2 = _mm256_mul_ps(rx2, ry2) ; 
-			rs2 = _mm256_add_ps(rp2, rs2);
+			rx2 = _mm256_load_ps(&v_x_al[i+8]); 
+			rs2 = _mm256_add_ps(rx2, rs2);
 		} 
 		_mm256_store_ps(&result[0], rs) ;
 		_mm256_store_ps(&result[8], rs2) ;		 		
@@ -182,24 +158,16 @@ int main(){
 	
 		for ( int i = 0 ; i < n ; i+=32){
 			rx = _mm256_load_ps(&v_x_al[i]);
-			ry = _mm256_load_ps(&v_y_al[i] );
-			rp = _mm256_mul_ps(rx, ry) ; 
-			rs = _mm256_add_ps(rp, rs);
+			rs = _mm256_add_ps(rx, rs);
 			
 			rx2 = _mm256_load_ps(&v_x_al[i+8]);
-			ry2 = _mm256_load_ps(&v_y_al[i+8] );
-			rp2 = _mm256_mul_ps(rx2, ry2) ; 
-			rs2 = _mm256_add_ps(rp2, rs2);
+			rs2 = _mm256_add_ps(rx2, rs2);
 			
 			rx3 = _mm256_load_ps(&v_x_al[i+16]);
-			ry3 = _mm256_load_ps(&v_y_al[i+16] );
-			rp3 = _mm256_mul_ps(rx3, ry3) ; 
-			rs3 = _mm256_add_ps(rp3, rs3);
+			rs3 = _mm256_add_ps(rx3, rs3);
 			
 			rx4 = _mm256_load_ps(&v_x_al[i+24]);
-			ry4 = _mm256_load_ps(&v_y_al[i+24] );
-			rp4 = _mm256_mul_ps(rx4, ry4) ; 
-			rs4 = _mm256_add_ps(rp4, rs4);			
+			rs4 = _mm256_add_ps(rx4, rs4);			
 			
 		} 
 		_mm256_store_ps(&result[0], rs) ; 	
@@ -217,6 +185,64 @@ int main(){
 	printf("double unrolled fma intrinsic time : %lf\n", ((after - before)/repetition));
 	printf("double unrolled fma intrinsic sum : %f\n", sum) ; 	
 
+	
+	// quadruple unrolled fma intrinsic version 
+	sum = 0 ;                             
+	before = (double)rdtsc();
+	for (int j = 0 ; j < repetition ; j++){	
+	rs = _mm256_setzero_ps() ;	
+	rs2 = _mm256_setzero_ps() ;
+	rs3 = _mm256_setzero_ps() ;	
+	rs4 = _mm256_setzero_ps() ;
+	rs5 = _mm256_setzero_ps() ;	
+	rs6 = _mm256_setzero_ps() ;
+	rs7 = _mm256_setzero_ps() ;	
+	rs8 = _mm256_setzero_ps() ;	
+	
+		for ( int i = 0 ; i < n ; i+=64){
+			rx = _mm256_load_ps(&v_x_al[i]);
+			rs = _mm256_add_ps(rx, rs);
+			
+			rx2 = _mm256_load_ps(&v_x_al[i+8]);
+			rs2 = _mm256_add_ps(rx2, rs2);
+			
+			rx3 = _mm256_load_ps(&v_x_al[i+16]);
+			rs3 = _mm256_add_ps(rx3, rs3);
+			
+			rx4 = _mm256_load_ps(&v_x_al[i+24]);
+			rs4 = _mm256_add_ps(rx4, rs4);	
+			
+			rx5 = _mm256_load_ps(&v_x_al[i+32]);
+			rs5 = _mm256_add_ps(rx5, rs5);
+			
+			rx6 = _mm256_load_ps(&v_x_al[i+40]);
+			rs6 = _mm256_add_ps(rx6, rs6);
+			
+			rx7 = _mm256_load_ps(&v_x_al[i+48]);
+			rs7 = _mm256_add_ps(rx7, rs7);
+			
+			rx8 = _mm256_load_ps(&v_x_al[i+56]);
+			rs8 = _mm256_add_ps(rx8, rs8);			
+			
+		} 
+		_mm256_store_ps(&result[0], rs) ; 	
+		_mm256_store_ps(&result[8], rs2) ; 
+		_mm256_store_ps(&result[16], rs3) ; 
+		_mm256_store_ps(&result[24], rs4) ; 	
+		_mm256_store_ps(&result[32], rs5) ; 	
+		_mm256_store_ps(&result[40], rs6) ; 
+		_mm256_store_ps(&result[48], rs7) ; 
+		_mm256_store_ps(&result[56], rs8) ; 
+		for (int k = 0 ; k < 64 ; k++){
+			//printf("%f\n", result[k]);
+			sum += result[k] ;	
+		}	
+
+		
+	}
+	after = (double)rdtsc();
+	printf("quadruple unrolled fma intrinsic time : %lf\n", ((after - before)/repetition));
+	printf("quadruple unrolled fma intrinsic sum : %f\n", sum) ; 
 
 }
 
