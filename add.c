@@ -4,8 +4,8 @@
 #include <stdlib.h>
 #include <immintrin.h>
 
-int n = 102400 ; 
-int repetition = 100; 
+int n = 10240 ; 
+int repetition = 100000; 
 
 typedef struct{
 	float x , y  ; 
@@ -20,6 +20,23 @@ unsigned long long rdtsc(void)
   
   return (d << 32) | a;
 }
+
+
+
+int randxy(int x, int y)
+{
+  return (rand() % (y - x + 1)) + x; 
+}
+
+//
+double randreal()
+{
+  int s = (randxy(0, 1)) ? 1 : -1;
+  int a = randxy(1, RAND_MAX), b = randxy(1, RAND_MAX);
+
+  return s * ((double)a / (double)b); 
+}
+
 
 
 vector *v_aos; 
@@ -41,9 +58,10 @@ int main(){
 
 	
 	// initialisation 
-	float value_x = 1.0 ;
-	float value_y = 2.0 ;  	
+  	
 	for (int i = 0 ; i < n ; i++){
+		float value_x = randreal(); 
+		float value_y = randreal();	
 		v_aos[i].x = value_x ; 
 		v_aos[i].y = value_y ; 	
 		v_x[i] = value_x ; 
@@ -185,9 +203,9 @@ int main(){
 			
 		} 
 		_mm256_store_ps(&result[0], rs) ; 	
-		_mm256_store_ps(&result[8], rs) ; 
-		_mm256_store_ps(&result[16], rs) ; 
-		_mm256_store_ps(&result[24], rs) ; 	
+		_mm256_store_ps(&result[8], rs2) ; 
+		_mm256_store_ps(&result[16], rs3) ; 
+		_mm256_store_ps(&result[24], rs4) ; 	
 		for (int k = 0 ; k < 64 ; k++){
 			//printf("%f\n", result[k]);
 			sum += result[k] ;	
