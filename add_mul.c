@@ -46,7 +46,7 @@ float *result ;
 
 
 int main(){
-	printf("This is the add benchmark\n");
+	printf("This is the add - mul benchmark\n");
 	v_aos = malloc(n * sizeof(vector));
 	v_x = malloc(n * sizeof(float)) ; 
 	v_y = malloc(n * sizeof(float)) ; 	
