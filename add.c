@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <immintrin.h>
 
-int n = 102400 ; 
+int n = 1024000 ; 
 int repetition = 100; 
 
 typedef struct{
@@ -242,7 +242,7 @@ int main(){
 	}
 	after = (double)rdtsc();
 	printf("quadruple unrolled fma intrinsic time : %lf\n", ((after - before)/repetition));
-	printf("quadruple unrolled fma intrinsic sum : %f\n", sum) ; 
+	printf("quadruple  unrolled fma intrinsic sum : %f\n", sum) ; 
 
 }
 
