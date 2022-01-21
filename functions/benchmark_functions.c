@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+#include <immintrin.h>
 
 // fenced rdtsc timer from intel doc
 static inline unsigned long long rdtsc()
@@ -24,6 +25,11 @@ void allocate(float** input, float**result, unsigned long long size){
 	*result = malloc(sizeof(float) * size) ; 
 }
 
+
+void aligned_allocate(float** input, float**result, unsigned long long size){
+	*input = aligned_alloc(64, sizeof(float) * size) ; 
+	*result = aligned_alloc(64, sizeof(float) * size) ; 
+}
 
 // deallocation
 void deallocate(float** input, float**result){
@@ -224,6 +230,34 @@ void compute_cos(float *input, float *result, unsigned long long size){
 		
 }
 
+void compute_rsqrtps256(float *input, float *result, unsigned long long size){
+
+	printf("\n ------ RSQRTPS bechmark ----- \n\n");
+
+	init_arrays(input, result, size) ; 
+	
+	unsigned long long before, after, delta;
+	__m256 r1 , r2;
+	r1 = _mm256_setzero_ps() ;
+	
+	before = rdtsc();
+	for (int i = 0 ; i < size ; i+=8){
+		r1 = _mm256_load_ps(&input[i]) ; 
+		r2 =  _mm256_load_ps(&input[i]) ; 
+		_mm256_store_ps(result+i, r2) ; 
+		 
+	}
+	after = rdtsc();
+	delta = after - before ;
+	
+	
+	double tics = (double)delta / (double)size ; 		
+	printf("sum : %f %f \n", compute_total(input, size), compute_total(result, size));
+	printf("total time : %llu\n", delta);
+	printf("rsqrt time : %f\n", tics);
+
+}
+
 
 
 
@@ -255,6 +289,10 @@ int main(){
 	compute_sqrt(input, result, size) ; 	
 	compute_pow(input, result, size) ; 
 	compute_cos(input, result, size) ; 
+	deallocate(&input, &result);	
 	
+	aligned_allocate(&input, &result, size);	
+	compute_rsqrtps256(input, result, size) ; 	
 	deallocate(&input, &result);		
+	
 }
