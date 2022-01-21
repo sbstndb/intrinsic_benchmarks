@@ -196,7 +196,7 @@ void compute_divsqrt(float *input, float *result, unsigned long long size){
 	
 	before = rdtsc();
 	for (int i = 0 ; i < size ; i++){
-		result[i] = 1/sqrt(input[i]) ; 
+		result[i] = 1./sqrt(input[i]) ; 
 	}
 	after = rdtsc();
 	delta = after - before ; 
