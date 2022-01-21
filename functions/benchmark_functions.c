@@ -186,6 +186,29 @@ void compute_sqrt(float *input, float *result, unsigned long long size){
 		
 }
 
+void compute_divsqrt(float *input, float *result, unsigned long long size){
+
+	printf("\n ------ DIVSQRT bechmark ----- \n\n");
+
+	init_arrays(input, result, size) ; 
+	
+	unsigned long long before, after, delta;
+	
+	before = rdtsc();
+	for (int i = 0 ; i < size ; i++){
+		result[i] = 1/sqrt(input[i]) ; 
+	}
+	after = rdtsc();
+	delta = after - before ; 
+	
+	double tics = (double)delta / (double)size ; 		
+	printf("sum : %f %f \n", compute_total(input, size), compute_total(result, size));
+	printf("total time : %llu\n", delta);
+	printf("sqrt time : %f\n", tics);
+		
+}
+
+
 void compute_pow(float *input, float *result, unsigned long long size){
 
 	printf("\n ------ POW bechmark ----- \n\n");
@@ -287,6 +310,7 @@ int main(){
 	compute_multiply(input, result, size) ; 
 	compute_div(input, result, size) ; 
 	compute_sqrt(input, result, size) ; 	
+	compute_divsqrt(input, result, size) ; 	
 	compute_pow(input, result, size) ; 
 	compute_cos(input, result, size) ; 
 	deallocate(&input, &result);	
