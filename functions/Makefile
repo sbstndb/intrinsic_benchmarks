@@ -1,14 +1,17 @@
 all : vectorized non_vectorized
 
 vectorized:
-	gcc benchmark_functions.c -ftree-vectorize -O3 -lm -o benchmarks_vectorized
+	gcc benchmark_functions.c -ftree-vectorize -O3 -lm -o v3
+	gcc benchmark_functions.c -ftree-vectorize -Ofast -lm -o vf
 
 non_vectorized:
-	gcc benchmark_functions.c -fno-tree-vectorize -O3 -lm -o benchmarks_non_vectorized
+	gcc benchmark_functions.c -fno-tree-vectorize -O3 -lm -o nv3
+	gcc benchmark_functions.c -fno-tree-vectorize -Ofast -lm -o nvf
 	
 clean:
-	rm benchmarks_vectorized benchmarks_non_vectorized
+	rm v3 vf nv3 nvf
 	
 run:
-	./benchmarks_vectorized ./benchmarks_non_vectorized
+	make all
+	./nf3 ./nvf ./v3 ./vf
 	
