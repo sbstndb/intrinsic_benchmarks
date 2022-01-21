@@ -70,9 +70,31 @@ void compute_write(float *input, float *result, unsigned long long size){
 		
 }
 
-void compute_sum(float *input, float *result, unsigned long long size){
+void compute_add(float *input, float *result, unsigned long long size){
 
-	printf("\n ------ SUM bechmark ----- \n\n");
+	printf("\n ------ ADD bechmark ----- \n\n");
+
+	init_arrays(input, result, size) ; 
+	
+	unsigned long long before, after, delta;
+	
+	before = rdtsc();
+	for (int i = 0 ; i < size ; i++){
+		result[i] = input[i]+input[i] ; 
+	}
+	after = rdtsc();
+	delta = after - before ; 
+	
+	double tics = (double)delta / (double)size ; 		
+	printf("sum : %f %f \n", compute_total(input, size), compute_total(result, size));
+	printf("total time : %llu\n", delta);
+	printf("sqrt time : %f\n", tics);
+		
+}
+
+void compute_sub(float *input, float *result, unsigned long long size){
+
+	printf("\n ------ SUB bechmark ----- \n\n");
 
 	init_arrays(input, result, size) ; 
 	
@@ -180,6 +202,28 @@ void compute_pow(float *input, float *result, unsigned long long size){
 		
 }
 
+void compute_cos(float *input, float *result, unsigned long long size){
+
+	printf("\n ------ COS bechmark ----- \n\n");
+
+	init_arrays(input, result, size) ; 
+	
+	unsigned long long before, after, delta;
+	
+	before = rdtsc();
+	for (int i = 0 ; i < size ; i++){
+		result[i] = cos(input[i]) ; 
+	}
+	after = rdtsc();
+	delta = after - before ; 
+	
+	double tics = (double)delta / (double)size ; 		
+	printf("sum : %f %f \n", compute_total(input, size), compute_total(result, size));
+	printf("total time : %llu\n", delta);
+	printf("sqrt time : %f\n", tics);
+		
+}
+
 
 
 
@@ -189,7 +233,7 @@ int main(){
 
 	unsigned long long before, after, delta ;
 	double tics = 0.0 ; 
-	int size = 16*100;
+	int size = 16*500;
 	int n = 1 ; 
 	float sum_input  = 0.0  ; 
 	float sum_result = 0.0 ; 
@@ -204,12 +248,13 @@ int main(){
 	
 	// benchmark of b = a + a ; 	
 	compute_write(input, result, size) ; 			 	
-	compute_sum(input, result, size) ; 
+	compute_add(input, result, size) ; 
+	compute_sub(input, result, size) ; 
 	compute_multiply(input, result, size) ; 
 	compute_div(input, result, size) ; 
 	compute_sqrt(input, result, size) ; 	
 	compute_pow(input, result, size) ; 
-
+	compute_cos(input, result, size) ; 
 	
 	deallocate(&input, &result);		
 }
