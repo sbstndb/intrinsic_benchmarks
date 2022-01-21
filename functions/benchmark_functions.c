@@ -190,7 +190,7 @@ void compute_pow(float *input, float *result, unsigned long long size){
 	
 	before = rdtsc();
 	for (int i = 0 ; i < size ; i++){
-		result[i] = pow(input[i], 3/2) ; 
+		result[i] = pow(input[i], 1.5) ; 
 	}
 	after = rdtsc();
 	delta = after - before ; 
