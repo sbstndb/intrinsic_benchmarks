@@ -53,6 +53,8 @@ float compute_total(float *array, unsigned long long size){
 	return sum  ;
 }
 
+
+
 void compute_add(float *input, float *result, unsigned long long size){
 
 	printf("\n ------ ADD bechmark ----- \n\n");
@@ -64,6 +66,28 @@ void compute_add(float *input, float *result, unsigned long long size){
 	before = rdtsc();
 	for (int i = 0 ; i < size ; i++){
 		result[i] = input[i]+input[i] ; 
+	}
+	after = rdtsc();
+	delta = after - before ; 
+	
+	double tics = (double)delta / (double)size ; 		
+	printf("sum : %f %f \n", compute_total(input, size), compute_total(result, size));
+	printf("total time : %llu\n", delta);
+	printf("add time : %f\n", tics);
+		
+}
+
+void compute_sqrt(float *input, float *result, unsigned long long size){
+
+	printf("\n ------ SQRT bechmark ----- \n\n");
+
+	init_arrays(input, result, size) ; 
+	
+	unsigned long long before, after, delta;
+	
+	before = rdtsc();
+	for (int i = 0 ; i < size ; i++){
+		result[i] = sqrt(input[i]) ; 
 	}
 	after = rdtsc();
 	delta = after - before ; 
@@ -96,6 +120,7 @@ int main(){
 	
 	// benchmark of b = a + a ; 			 	
 	compute_add(input, result, size) ; 
+	compute_sqrt(input, result, size) ; 
 	deallocate(&input, &result);		
 	
 }
