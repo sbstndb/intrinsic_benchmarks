@@ -149,6 +149,7 @@ void compute_multiply(float *input, float *result, unsigned long long size, unsi
 	
 	double tics = (double)delta / ((double)size* (double) amount); 		
 	printf("sum : %f %f \n", compute_total(input, size), compute_total(result, size));
+	printf("number of repetition : %llu\n", amount);
 	printf("total time : %llu\n", delta);
 	printf("multiply time : %f\n", tics);
 		
@@ -174,6 +175,7 @@ void compute_div(float *input, float *result, unsigned long long size, unsigned 
 	
 	double tics = (double)delta / ((double)size* (double) amount); 		
 	printf("sum : %f %f \n", compute_total(input, size), compute_total(result, size));
+	printf("number of repetition : %llu\n", amount);
 	printf("total time : %llu\n", delta);
 	printf("div time : %f\n", tics);
 		
@@ -199,6 +201,7 @@ void compute_sqrt(float *input, float *result, unsigned long long size, unsigned
 	
 	double tics = (double)delta / ((double)size* (double) amount); 		
 	printf("sum : %f %f \n", compute_total(input, size), compute_total(result, size));
+	printf("number of repetition : %llu\n", amount);
 	printf("total time : %llu\n", delta);
 	printf("sqrt time : %f\n", tics);
 		
@@ -224,8 +227,37 @@ void compute_divsqrt(float *input, float *result, unsigned long long size, unsig
 	
 	double tics = (double)delta / ((double)size* (double) amount); 	
 	printf("sum : %f %f \n", compute_total(input, size), compute_total(result, size));
+	printf("number of repetition : %llu\n", amount);
 	printf("total time : %llu\n", delta);
 	printf("divsqrt time : %f\n", tics);
+		
+}
+
+void compute_mdivsqrt(float *input, float *result, unsigned long long size, unsigned long long n){
+
+	printf("\n ------ MODIFIED DIVSQRT bechmark ----- \n\n");
+
+	init_arrays(input, result, size) ; 
+	
+	unsigned long long before, after, delta;
+	unsigned long long amount = 0 ; 
+	before = rdtsc();
+	float tmp = 0.0 ; 
+	for (unsigned long long j = 0 ; j < n ; j++){
+		for (int i = 0 ; i < size ; i++){
+			tmp = sqrt(input[i]) ; 
+			result[i] = 1./tmp ; 
+		}
+		amount +=1 ; 
+	}
+	after = rdtsc();
+	delta = after - before ; 
+	
+	double tics = (double)delta / ((double)size* (double) amount); 	
+	printf("sum : %f %f \n", compute_total(input, size), compute_total(result, size));
+	printf("number of repetition : %llu\n", amount);
+	printf("total time : %llu\n", delta);
+	printf("modified divsqrt time : %f\n", tics);
 		
 }
 
@@ -250,6 +282,7 @@ void compute_pow(float *input, float *result, unsigned long long size, unsigned 
 	
 	double tics = (double)delta / ((double)size* (double) amount); 	
 	printf("sum : %f %f \n", compute_total(input, size), compute_total(result, size));
+	printf("number of repetition : %llu\n", amount);
 	printf("total time : %llu\n", delta);
 	printf("pow time : %f\n", tics);
 		
@@ -275,6 +308,7 @@ void compute_cos(float *input, float *result, unsigned long long size, unsigned 
 	
 	double tics = (double)delta / ((double)size* (double) amount); 		
 	printf("sum : %f %f \n", compute_total(input, size), compute_total(result, size));
+	printf("number of repetition : %llu\n", amount);
 	printf("total time : %llu\n", delta);
 	printf("cos time : %f\n", tics);		
 }
@@ -300,6 +334,7 @@ void compute_exp(float *input, float *result, unsigned long long size, unsigned 
 	
 	double tics = (double)delta / ((double)modified_size * (double) amount); 		
 	printf("sum : %f %f \n", compute_total(input, size), compute_total(result, size));
+	printf("number of repetition : %llu\n", amount);
 	printf("total time : %llu\n", delta);
 	printf("exp time : %f\n", tics);		
 }
@@ -331,6 +366,7 @@ void compute_rsqrtps256(float *input, float *result, unsigned long long size, un
 	
 	double tics = (double)delta / ((double)size* (double) amount); 	
 	printf("sum : %f %f \n", compute_total(input, size), compute_total(result, size));
+	printf("number of repetition : %llu\n", amount);
 	printf("total time : %llu\n", delta);
 	printf("rsqrt time : %f\n", tics);
 
@@ -346,7 +382,7 @@ int main(){
 	unsigned long long before, after, delta ;
 	double tics = 0.0 ; 
 	int size = 16*500;
-	unsigned long long n = 100 ; 
+	unsigned long long n = 1 ; 
 	float sum_input  = 0.0  ; 
 	float sum_result = 0.0 ; 
 	float tmp = 0.0 ; 
@@ -365,7 +401,8 @@ int main(){
 	compute_multiply(input, result, size, n) ; 
 	compute_div(input, result, size, n) ; 
 	compute_sqrt(input, result, size, n) ; 	
-	compute_divsqrt(input, result, size, n) ; 	
+	compute_divsqrt(input, result, size, n) ; 
+	compute_mdivsqrt(input, result, size, n) ;	
 	compute_pow(input, result, size, n) ; 
 	compute_cos(input, result, size, n) ; 
 	compute_exp(input, result, size, n) ; 
