@@ -54,202 +54,229 @@ float compute_total(float *array, unsigned long long size){
 }
 
 
-void compute_write(float *input, float *result, unsigned long long size){
+void compute_write(float *input, float *result, unsigned long long size, unsigned long long n){
 
 	printf("\n ------ WRITE bechmark ----- \n\n");
 
 	init_arrays(input, result, size) ; 
 	
 	unsigned long long before, after, delta;
-	
+	unsigned long long amount = 0 ; 
 	before = rdtsc();
-	for (int i = 0 ; i < size ; i++){
-		result[i] = input[i] ; 
+	for (unsigned long long j = 0 ; j < n ; j++){
+		for (int i = 0 ; i < size ; i++){
+			result[i] = input[i]  ; 
+		}
+		amount +=1 ; 
 	}
 	after = rdtsc();
 	delta = after - before ; 
 	
-	double tics = (double)delta / (double)size ; 		
+	double tics = (double)delta / ((double)size* (double) amount); 		
 	printf("sum : %f %f \n", compute_total(input, size), compute_total(result, size));
 	printf("total time : %llu\n", delta);
-	printf("sqrt time : %f\n", tics);
+	printf("write time : %f\n", tics);
 		
 }
 
-void compute_add(float *input, float *result, unsigned long long size){
+void compute_add(float *input, float *result, unsigned long long size, unsigned long long n){
 
 	printf("\n ------ ADD bechmark ----- \n\n");
 
 	init_arrays(input, result, size) ; 
 	
 	unsigned long long before, after, delta;
-	
+	unsigned long long amount = 0 ; 
 	before = rdtsc();
-	for (int i = 0 ; i < size ; i++){
-		result[i] = input[i]+input[i] ; 
+	for (unsigned long long j = 0 ; j < n ; j++){
+		for (int i = 0 ; i < size ; i++){
+			result[i] = input[i] + input[i] ; 
+		}
+		amount +=1 ; 
 	}
 	after = rdtsc();
 	delta = after - before ; 
 	
-	double tics = (double)delta / (double)size ; 		
+	double tics = (double)delta / ((double)size* (double) amount); 		
 	printf("sum : %f %f \n", compute_total(input, size), compute_total(result, size));
 	printf("total time : %llu\n", delta);
-	printf("sqrt time : %f\n", tics);
+	printf("add time : %f\n", tics);
 		
 }
 
-void compute_sub(float *input, float *result, unsigned long long size){
+void compute_sub(float *input, float *result, unsigned long long size, unsigned long long n){
 
 	printf("\n ------ SUB bechmark ----- \n\n");
 
 	init_arrays(input, result, size) ; 
 	
 	unsigned long long before, after, delta;
-	
+	unsigned long long amount = 0 ; 
 	before = rdtsc();
-	for (int i = 0 ; i < size ; i++){
-		result[i] = input[i]+input[i] ; 
+	for (unsigned long long j = 0 ; j < n ; j++){
+		for (int i = 0 ; i < size ; i++){
+			result[i] = input[i] - input[i] ; 
+		}
+		amount +=1 ; 
 	}
 	after = rdtsc();
 	delta = after - before ; 
 	
-	double tics = (double)delta / (double)size ; 		
+	double tics = (double)delta / ((double)size* (double) amount); 		
 	printf("sum : %f %f \n", compute_total(input, size), compute_total(result, size));
 	printf("total time : %llu\n", delta);
-	printf("sqrt time : %f\n", tics);
+	printf("sub time : %f\n", tics);
 		
 }	
 
-void compute_multiply(float *input, float *result, unsigned long long size){
+void compute_multiply(float *input, float *result, unsigned long long size, unsigned long long n){
 
-	printf("\n ------ MULTIPLY bechmark ----- \n\n");
+	printf("\n ------ MULTIPLY3 bechmark ----- \n\n");
 
 	init_arrays(input, result, size) ; 
 	
 	unsigned long long before, after, delta;
-	
+	unsigned long long amount = 0 ; 
 	before = rdtsc();
-	for (int i = 0 ; i < size ; i++){
-		result[i] = input[i]*input[i]*input[i] ; 
+	for (unsigned long long j = 0 ; j < n ; j++){
+		for (int i = 0 ; i < size ; i++){
+			result[i] = input[i] * input[i] * input[i] ; 
+		}
+		amount +=1 ; 
 	}
 	after = rdtsc();
 	delta = after - before ; 
 	
-	double tics = (double)delta / (double)size ; 		
-
-	printf("sum : %f %f \n", compute_total(input, size), compute_total(result, size));	printf("total time : %llu\n", delta);
-	printf("sqrt time : %f\n", tics);
+	double tics = (double)delta / ((double)size* (double) amount); 		
+	printf("sum : %f %f \n", compute_total(input, size), compute_total(result, size));
+	printf("total time : %llu\n", delta);
+	printf("multiply time : %f\n", tics);
 		
 }
 
-void compute_div(float *input, float *result, unsigned long long size){
+void compute_div(float *input, float *result, unsigned long long size, unsigned long long n){
 
 	printf("\n ------ DIV bechmark ----- \n\n");
 
 	init_arrays(input, result, size) ; 
 	
 	unsigned long long before, after, delta;
-	
+	unsigned long long amount = 0 ; 
 	before = rdtsc();
-	for (int i = 0 ; i < size ; i++){
-		result[i] = 1/input[i] ; 
+	for (unsigned long long j = 0 ; j < n ; j++){
+		for (int i = 0 ; i < size ; i++){
+			result[i] = 1./input[i] ; 
+		}
+		amount +=1 ; 
 	}
 	after = rdtsc();
 	delta = after - before ; 
 	
-	double tics = (double)delta / (double)size ; 		
+	double tics = (double)delta / ((double)size* (double) amount); 		
 	printf("sum : %f %f \n", compute_total(input, size), compute_total(result, size));
 	printf("total time : %llu\n", delta);
-	printf("sqrt time : %f\n", tics);
+	printf("div time : %f\n", tics);
 		
 }
 
-void compute_sqrt(float *input, float *result, unsigned long long size){
+void compute_sqrt(float *input, float *result, unsigned long long size, unsigned long long n){
 
 	printf("\n ------ SQRT bechmark ----- \n\n");
 
 	init_arrays(input, result, size) ; 
 	
 	unsigned long long before, after, delta;
-	
+	unsigned long long amount = 0 ; 
 	before = rdtsc();
-	for (int i = 0 ; i < size ; i++){
-		result[i] = sqrt(input[i]) ; 
+	for (unsigned long long j = 0 ; j < n ; j++){
+		for (int i = 0 ; i < size ; i++){
+			result[i] = sqrt(input[i]) ; 
+		}
+		amount +=1 ; 
 	}
 	after = rdtsc();
 	delta = after - before ; 
 	
-	double tics = (double)delta / (double)size ; 		
+	double tics = (double)delta / ((double)size* (double) amount); 		
 	printf("sum : %f %f \n", compute_total(input, size), compute_total(result, size));
 	printf("total time : %llu\n", delta);
 	printf("sqrt time : %f\n", tics);
 		
 }
 
-void compute_divsqrt(float *input, float *result, unsigned long long size){
+void compute_divsqrt(float *input, float *result, unsigned long long size, unsigned long long n){
 
 	printf("\n ------ DIVSQRT bechmark ----- \n\n");
 
 	init_arrays(input, result, size) ; 
 	
 	unsigned long long before, after, delta;
-	
+	unsigned long long amount = 0 ; 
 	before = rdtsc();
-	for (int i = 0 ; i < size ; i++){
-		result[i] = 1./sqrt(input[i]) ; 
+	for (unsigned long long j = 0 ; j < n ; j++){
+		for (int i = 0 ; i < size ; i++){
+			result[i] = 1./sqrt(input[i]) ; 
+		}
+		amount +=1 ; 
 	}
 	after = rdtsc();
 	delta = after - before ; 
 	
-	double tics = (double)delta / (double)size ; 		
+	double tics = (double)delta / ((double)size* (double) amount); 	
 	printf("sum : %f %f \n", compute_total(input, size), compute_total(result, size));
 	printf("total time : %llu\n", delta);
-	printf("sqrt time : %f\n", tics);
+	printf("divsqrt time : %f\n", tics);
 		
 }
 
 
-void compute_pow(float *input, float *result, unsigned long long size){
+void compute_pow(float *input, float *result, unsigned long long size, unsigned long long n){
 
 	printf("\n ------ POW bechmark ----- \n\n");
 
 	init_arrays(input, result, size) ; 
 	
 	unsigned long long before, after, delta;
-	
+	unsigned long long amount = 0 ; 
 	before = rdtsc();
-	for (int i = 0 ; i < size ; i++){
-		result[i] = pow(input[i], 1.5) ; 
+	for (unsigned long long j = 0 ; j < n ; j++){
+		for (int i = 0 ; i < size ; i++){
+			result[i] = pow(input[i], 1.5) ; 
+		}
+		amount +=1 ; 
 	}
 	after = rdtsc();
 	delta = after - before ; 
 	
-	double tics = (double)delta / (double)size ; 		
+	double tics = (double)delta / ((double)size* (double) amount); 	
 	printf("sum : %f %f \n", compute_total(input, size), compute_total(result, size));
 	printf("total time : %llu\n", delta);
-	printf("sqrt time : %f\n", tics);
+	printf("pow time : %f\n", tics);
 		
 }
 
-void compute_cos(float *input, float *result, unsigned long long size){
+void compute_cos(float *input, float *result, unsigned long long size, unsigned long long n){
 
 	printf("\n ------ COS bechmark ----- \n\n");
 
 	init_arrays(input, result, size) ; 
 	
 	unsigned long long before, after, delta;
-	
+	unsigned long long amount = 0 ; 
 	before = rdtsc();
-	for (int i = 0 ; i < size ; i++){
-		result[i] = cos(input[i]) ; 
+	for (unsigned long long j = 0 ; j < n ; j++){
+		for (int i = 0 ; i < size ; i++){
+			result[i] = cos(input[i]) ; 
+		}
+		amount +=1 ; 
 	}
 	after = rdtsc();
 	delta = after - before ; 
 	
-	double tics = (double)delta / (double)size ; 		
+	double tics = (double)delta / ((double)size* (double) amount); 		
 	printf("sum : %f %f \n", compute_total(input, size), compute_total(result, size));
 	printf("total time : %llu\n", delta);
-	printf("sqrt time : %f\n", tics);
+	printf("cos time : %f\n", tics);
 		
 }
 
@@ -291,7 +318,7 @@ int main(){
 	unsigned long long before, after, delta ;
 	double tics = 0.0 ; 
 	int size = 16*500;
-	int n = 1 ; 
+	unsigned long long n = 100 ; 
 	float sum_input  = 0.0  ; 
 	float sum_result = 0.0 ; 
 	float tmp = 0.0 ; 
@@ -304,15 +331,15 @@ int main(){
 			 	
 	
 	// benchmark of b = a + a ; 	
-	compute_write(input, result, size) ; 			 	
-	compute_add(input, result, size) ; 
-	compute_sub(input, result, size) ; 
-	compute_multiply(input, result, size) ; 
-	compute_div(input, result, size) ; 
-	compute_sqrt(input, result, size) ; 	
-	compute_divsqrt(input, result, size) ; 	
-	compute_pow(input, result, size) ; 
-	compute_cos(input, result, size) ; 
+	compute_write(input, result, size, n) ; 			 	
+	compute_add(input, result, size, n) ; 
+	compute_sub(input, result, size, n) ; 
+	compute_multiply(input, result, size, n) ; 
+	compute_div(input, result, size, n) ; 
+	compute_sqrt(input, result, size, n) ; 	
+	compute_divsqrt(input, result, size, n) ; 	
+	compute_pow(input, result, size, n) ; 
+	compute_cos(input, result, size, n) ; 
 	deallocate(&input, &result);	
 	
 	aligned_allocate(&input, &result, size);	
