@@ -276,32 +276,60 @@ void compute_cos(float *input, float *result, unsigned long long size, unsigned 
 	double tics = (double)delta / ((double)size* (double) amount); 		
 	printf("sum : %f %f \n", compute_total(input, size), compute_total(result, size));
 	printf("total time : %llu\n", delta);
-	printf("cos time : %f\n", tics);
-		
+	printf("cos time : %f\n", tics);		
 }
 
-void compute_rsqrtps256(float *input, float *result, unsigned long long size){
+void compute_exp(float *input, float *result, unsigned long long size, unsigned long long n){
+
+	printf("\n ------ EXP bechmark ----- \n\n");
+
+	init_arrays(input, result, size) ; 
+	
+	unsigned long long before, after, delta;
+	unsigned long long amount = 0 ; 
+	unsigned long long modified_size = 50 ; 
+	before = rdtsc();
+	for (unsigned long long j = 0 ; j < n ; j++){
+		for (int i = 0 ; i < modified_size ; i++){
+			result[i] = exp(input[i]) ; 
+		}
+		amount +=1 ; 
+	}
+	after = rdtsc();
+	delta = after - before ; 
+	
+	double tics = (double)delta / ((double)modified_size * (double) amount); 		
+	printf("sum : %f %f \n", compute_total(input, size), compute_total(result, size));
+	printf("total time : %llu\n", delta);
+	printf("exp time : %f\n", tics);		
+}
+
+
+void compute_rsqrtps256(float *input, float *result, unsigned long long size, unsigned long long n){
 
 	printf("\n ------ RSQRTPS bechmark ----- \n\n");
 
 	init_arrays(input, result, size) ; 
 	
 	unsigned long long before, after, delta;
+	unsigned long long amount = 0 ; 
 	__m256 r1 , r2;
 	r1 = _mm256_setzero_ps() ;
 	
 	before = rdtsc();
-	for (int i = 0 ; i < size ; i+=8){
-		r1 = _mm256_load_ps(&input[i]) ; 
-		r2 =  _mm256_load_ps(&input[i]) ; 
-		_mm256_store_ps(result+i, r2) ; 
-		 
+	for (unsigned long long j = 0 ; j < n ; j++){
+		for (int i = 0 ; i < size ; i+=8){
+			r1 = _mm256_load_ps(&input[i]) ; 
+			r2 =  _mm256_rsqrt_ps(r1) ; 
+			_mm256_store_ps(result+i, r2) ; 	 
+		}
+		amount +=1 ; 
 	}
 	after = rdtsc();
 	delta = after - before ;
 	
 	
-	double tics = (double)delta / (double)size ; 		
+	double tics = (double)delta / ((double)size* (double) amount); 	
 	printf("sum : %f %f \n", compute_total(input, size), compute_total(result, size));
 	printf("total time : %llu\n", delta);
 	printf("rsqrt time : %f\n", tics);
@@ -340,10 +368,11 @@ int main(){
 	compute_divsqrt(input, result, size, n) ; 	
 	compute_pow(input, result, size, n) ; 
 	compute_cos(input, result, size, n) ; 
+	compute_exp(input, result, size, n) ; 
 	deallocate(&input, &result);	
 	
 	aligned_allocate(&input, &result, size);	
-	compute_rsqrtps256(input, result, size) ; 	
+	compute_rsqrtps256(input, result, size, n) ; 	
 	deallocate(&input, &result);		
 	
 }
