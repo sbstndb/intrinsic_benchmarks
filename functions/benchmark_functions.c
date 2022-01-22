@@ -381,8 +381,8 @@ int main(){
 
 	unsigned long long before, after, delta ;
 	double tics = 0.0 ; 
-	int size = 16*500;
-	unsigned long long n = 1 ; 
+	int size = 16*1000;
+	unsigned long long n = 10; 
 	float sum_input  = 0.0  ; 
 	float sum_result = 0.0 ; 
 	float tmp = 0.0 ; 
