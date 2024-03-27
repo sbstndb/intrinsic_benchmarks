@@ -1,4 +1,16 @@
+## Description
 
+This is a short project to try some code optimization effects like
+
+<ul>
+        <li>Array of Structure vs Structure of Arrays</li> 
+        <li>Loop unrolling</li>
+        <li>elementary math functions</li> 
+</ul>
+
+The aim is to quantify the speedup and try to learn code optimization. 
+
+There are many files with many purposes in the `src` folder. 
 
 
 ## Compilation
@@ -23,9 +35,9 @@ cmake -DCMAKE_COMPILER=<compiler_name> ..
 ### Optimizations
 And you can compile with different optimization directives 
 <ul>
-	<li>Debug</li> with classic -O0 flag
-        <li>Release</li> with classic -02 flag
-        <li>Optimized</li> with aggressive flags
+	<li>Debug with classic -O0 flag</li>
+        <li>Release with classic -02 flag</li>
+        <li>Optimized with aggressive flags like -Ofast</li>
 </ul>
 
 The compilation is then performed as follows : 
@@ -34,9 +46,7 @@ The compilation is then performed as follows :
 	cmake -DCMAKE_BUILD_TYPE=Optimized ...
 ```
 
-
 ## Execution
-
 Each executable can be launched with the command : 
 
 ```bash
