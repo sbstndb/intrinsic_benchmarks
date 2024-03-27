@@ -30,7 +30,7 @@ You can specify the compiler thanks to
 
 ```bash 
 
-cmake -DCMAKE_COMPILER=<compiler_name> ..
+cmake -DCMAKE_C_COMPILER=<compiler_name> ..
 ```
 ### Optimizations
 And you can compile with different optimization directives 
@@ -44,6 +44,12 @@ The compilation is then performed as follows :
 
 ```bash
 	cmake -DCMAKE_BUILD_TYPE=Optimized ...
+```
+
+### Exemple
+You can try to compile with : 
+```bash
+cmake -DCMAKE_C_COMPILER=gcc -DCMAKE_BUILD_TYPE=Optimized  ..
 ```
 
 ## Execution
