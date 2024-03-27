@@ -6,6 +6,7 @@ This is a short project to try some code optimization effects like
         <li>Array of Structure vs Structure of Arrays</li> 
         <li>Loop unrolling</li>
         <li>elementary math functions</li> 
+	<li>Usage of intrinsic AVX2 functions</li>
 </ul>
 
 The aim is to quantify the speedup and try to learn code optimization. 
