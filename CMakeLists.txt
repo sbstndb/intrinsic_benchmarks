@@ -28,6 +28,11 @@ foreach(source_file ${SOURCE_FILES})
 	target_compile_options(${executable_name} PUBLIC -Wall -Wextra)	
 	target_link_libraries(${executable_name} m)
 
+	if (${executable_name} STREQUAL "benchmark_functions")
+	        target_compile_options(${executable_name} PUBLIC -mavx2)
+	endif()
+
+
 	if(CMAKE_BUILD_TYPE STREQUAL "Optimized")
 		target_compile_options(${executable_name}  PUBLIC ${OPTIMIZED_OPTIONS})
 	elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
