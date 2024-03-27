@@ -26,6 +26,7 @@ foreach(source_file ${SOURCE_FILES})
 	get_filename_component(executable_name ${source_file} NAME_WE)
 	add_executable(${executable_name} ${source_file})
 	target_compile_options(${executable_name} PUBLIC -Wall -Wextra)	
+	target_link_libraries(${executable_name} m)
 
 	if(CMAKE_BUILD_TYPE STREQUAL "Optimized")
 		target_compile_options(${executable_name}  PUBLIC ${OPTIMIZED_OPTIONS})
