@@ -46,17 +46,13 @@ float *result ;
 
 
 int main(){
-	printf("This is the add - mul benchmark\n");
+	printf(" --- ADD - MUL benchmark --- \n");
 	v_aos = malloc(n * sizeof(vector));
 	v_x = malloc(n * sizeof(float)) ; 
 	v_y = malloc(n * sizeof(float)) ; 	
 	v_x_al = aligned_alloc(n, n * sizeof(float)) ; 
 	v_y_al = aligned_alloc(n, n * sizeof(float)) ; 
-	result = aligned_alloc(64, 64*sizeof(float));	
-
-
-
-	
+	result = aligned_alloc(64, 64*sizeof(float));		
 	// initialisation 
   	
 	for (int i = 0 ; i < n ; i++){
@@ -82,8 +78,8 @@ int main(){
 		}
 	}
 	double after = (double)rdtsc();
-	printf("AOS time : %lf\n", ((after - before)/repetition));
-	printf("AOS sum : %f\n", sum) ; 
+	printf("   --->   AOS time : %lf\n", ((after - before)/repetition));
+	printf("   --->   AOS sum : %f\n", sum) ; 
 	
 	// SOA version
 	sum = 0.0 ; 		
@@ -95,8 +91,8 @@ int main(){
 		}
 	}
 	after = (double)rdtsc();
-	printf("SOA time : %lf\n", ((after - before)/repetition));
-	printf("SOA sum : %f\n", sum) ; 
+	printf("   --->   SOA time : %lf\n", ((after - before)/repetition));
+	printf("   --->   SOA sum : %f\n", sum) ; 
 	
 	// bad intrinsic version 
 	__m256 rx, ry,rp, rs, rx2, ry2, rp2, rs2, rx3, ry3, rp3, rs3, rx4, ry4, rp4, rs4 ;
@@ -115,8 +111,8 @@ int main(){
 		} 
 	}
 	after = (double)rdtsc();
-	printf("bad intrinsic time : %lf\n", ((after - before)/repetition));
-	printf("bad intrinsic sum : %f\n", sum) ; 	
+	printf("   --->   bad intrinsic time : %lf\n", ((after - before)/repetition));
+	printf("   --->   bad intrinsic sum : %f\n", sum) ; 	
 	
 	
 	// fma intrinsic version 
@@ -138,8 +134,8 @@ int main(){
 		
 	}
 	after = (double)rdtsc();
-	printf("fma intrinsic time : %lf\n", ((after - before)/repetition));
-	printf("fma intrinsic sum : %f\n", sum) ; 	
+	printf("   --->   fma intrinsic time : %lf\n", ((after - before)/repetition));
+	printf("   --->   fma intrinsic sum : %f\n", sum) ; 	
 
 
 	// unrolled fma intrinsic version 
@@ -167,8 +163,8 @@ int main(){
 		}	
 	}
 	after = (double)rdtsc();
-	printf("unrolled fma intrinsic time : %lf\n", ((after - before)/repetition));
-	printf("unrolled fma intrinsic sum : %f\n", sum) ; 
+	printf("   --->   unrolled fma intrinsic time : %lf\n", ((after - before)/repetition));
+	printf("   --->   unrolled fma intrinsic sum : %f\n", sum) ; 
 	
 	
 	// double unrolled fma intrinsic version 
@@ -214,8 +210,8 @@ int main(){
 		
 	}
 	after = (double)rdtsc();
-	printf("double unrolled fma intrinsic time : %lf\n", ((after - before)/repetition));
-	printf("double unrolled fma intrinsic sum : %f\n", sum) ; 	
+	printf("   --->   double unrolled fma intrinsic time : %lf\n", ((after - before)/repetition));
+	printf("   --->   double unrolled fma intrinsic sum : %f\n", sum) ; 	
 
 
 }

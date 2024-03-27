@@ -46,7 +46,7 @@ double *result ;
 
 
 int main(){
-	printf("-- This is the Pearson benchmark --\n");
+	printf(" --- PEARSON benchmark --- \n");
 	v_aos = malloc(n * sizeof(vector));
 	v_x = malloc(n * sizeof(double)) ; 
 	v_y = malloc(n * sizeof(double)) ; 	
@@ -57,7 +57,7 @@ int main(){
 	asxy = aligned_alloc(64, 64*sizeof(double));	
 	asx2 = aligned_alloc(64, 64*sizeof(double));	
 	asy2 = aligned_alloc(64, 64*sizeof(double));	
-	printf("allocated\n");
+	printf("   --- Allocated\n");
 
 	double before, after ;
 
@@ -81,7 +81,7 @@ int main(){
 		asx2[i] = 0.0 ; 
 		asy2[i] = 0.0 ; 
 	}
-	printf("initialized\n");	
+	printf("   --- Initialized\n");	
 	//bad AOS version
 	
 	double rho = 0.0 ; 
@@ -118,10 +118,10 @@ int main(){
 	after = (double)rdtsc();
 	
 	printf(" \n") ; 			
-	printf("AOS time : %lf\n", ((after - before)/repetition));
-	printf("AOS num : %lf\n", num) ; 
-	printf("AOS den : %lf\n", den) ; 
-	printf("AOS rho : %lf\n", rho) ; 	
+	printf("   --->   AOS time : %lf\n", ((after - before)/repetition));
+	printf("   --->   AOS num | %lf\n", num) ; 
+	printf("   --->   AOS den | %lf\n", den) ; 
+	printf("   --->   AOS rho | %lf\n", rho) ; 	
 	
 	
 	
@@ -151,10 +151,10 @@ int main(){
 	after = (double)rdtsc();
 	
 	printf(" \n") ; 		
-	printf("SOA time : %lf\n", ((after - before)/repetition));
-	printf("SOA num : %lf\n", num) ; 
-	printf("SOA den : %lf\n", den) ; 
-	printf("SOA rho : %lf\n", rho) ; 	
+	printf("   --->   SOA time : %lf\n", ((after - before)/repetition));
+	printf("   --->   SOA num | %lf\n", num) ; 
+	printf("   --->   SOA den | %lf\n", den) ; 
+	printf("   --->   SOA rho | %lf\n", rho) ; 	
 	
 	//Aligned SOA version	
 	before = (double)rdtsc();	
@@ -182,10 +182,10 @@ int main(){
 	after = (double)rdtsc();
 	
 	printf(" \n") ; 		
-	printf("Aligned SOA time : %lf\n", ((after - before)/repetition));
-	printf("Aligned SOA num : %lf\n", num) ; 
-	printf("Aligned SOA den : %lf\n", den) ; 
-	printf("Aligned SOA rho : %lf\n", rho) ; 	
+	printf("   --->   Aligned SOA time : %lf\n", ((after - before)/repetition));
+	printf("   --->   Aligned SOA num | %lf\n", num) ; 
+	printf("   --->   Aligned SOA den | %lf\n", den) ; 
+	printf("   --->   Aligned SOA rho | %lf\n", rho) ; 	
 
 
 
@@ -241,10 +241,10 @@ int main(){
 	}
 	after = (double)rdtsc();
 	printf("\n") ; 			
-	printf("intrinsic SOA time : %lf\n", ((after - before)/repetition));
-	printf("intrinsic SOA num : %lf\n", num) ; 
-	printf("intrinsic SOA den : %lf\n", den) ; 
-	printf("intrinsic SOA rho : %lf\n", rho) ; 	
+	printf("   --->   intrinsic SOA time : %lf\n", ((after - before)/repetition));
+	printf("   --->   intrinsic SOA num | %lf\n", num) ; 
+	printf("   --->   intrinsic SOA den | %lf\n", den) ; 
+	printf("   --->   intrinsic SOA rho | %lf\n", rho) ; 	
 
 	// unrolled intrinsic version 	
 	__m256d rxu, ryu, rxyu, rx2u, ry2u, sxu, syu, sxyu, sx2u, sy2u; 
@@ -321,10 +321,10 @@ int main(){
 	}
 	after = (double)rdtsc();
 	printf("\n") ; 			
-	printf("unrolled intrinsic SOA time : %lf\n", ((after - before)/repetition));
-	printf("unrolled intrinsic SOA num : %lf\n", num) ; 
-	printf("unrolled intrinsic SOA den : %lf\n", den) ; 
-	printf("unrolled intrinsic SOA rho : %lf\n", rho) ;
+	printf("   --->   unrolled intrinsic SOA time : %lf\n", ((after - before)/repetition));
+	printf("   --->   unrolled intrinsic SOA num | %lf\n", num) ; 
+	printf("   --->   unrolled intrinsic SOA den | %lf\n", den) ; 
+	printf("   --->   unrolled intrinsic SOA rho | %lf\n", rho) ;
 
 
 
@@ -447,10 +447,10 @@ int main(){
 	}
 	after = (double)rdtsc();
 	printf("\n") ; 			
-	printf("double unrolled intrinsic SOA time : %lf\n", ((after - before)/repetition));
-	printf("double unrolled intrinsic SOA num : %lf\n", num) ; 
-	printf("double unrolled intrinsic SOA den : %lf\n", den) ; 
-	printf("double unrolled intrinsic SOA rho : %lf\n", rho) ;
+	printf("   --->   double unrolled intrinsic SOA time : %lf\n", ((after - before)/repetition));
+	printf("   --->   double unrolled intrinsic SOA num | %lf\n", num) ; 
+	printf("   --->   double unrolled intrinsic SOA den | %lf\n", den) ; 
+	printf("   --->   double unrolled intrinsic SOA rho | %lf\n", rho) ;
 
 
 	

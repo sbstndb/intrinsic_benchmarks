@@ -14,10 +14,8 @@ typedef struct{
 
 unsigned long long rdtsc(void)
 {
-  unsigned long long a, d;
-  
+  unsigned long long a, d;  
   __asm__ volatile ("rdtsc" : "=a" (a), "=d" (d));
-  
   return (d << 32) | a;
 }
 
@@ -28,7 +26,7 @@ int randxy(int x, int y)
   return (rand() % (y - x + 1)) + x; 
 }
 
-//
+
 double randreal()
 {
   int s = (randxy(0, 1)) ? 1 : -1;
@@ -37,8 +35,6 @@ double randreal()
   return s * ((double)a / (double)b); 
 }
 
-
-
 vector *v_aos; 
 float *v_x, *v_y, *v_x_al, *v_y_al ; 
 float *result ; 
@@ -46,19 +42,14 @@ float *result ;
 
 
 int main(){
-	printf("This is the add benchmark\n");
+	printf(" --- ADD benchmark --- \n");
 	v_aos = malloc(n * sizeof(vector));
 	v_x = malloc(n * sizeof(float)) ; 
 	v_y = malloc(n * sizeof(float)) ; 	
 	v_x_al = aligned_alloc(n, n * sizeof(float)) ; 
 	v_y_al = aligned_alloc(n, n * sizeof(float)) ; 
 	result = aligned_alloc(64, 64*sizeof(float));	
-
-
-
-	
 	// initialisation 
-  	
 	for (int i = 0 ; i < n ; i++){
 		float value_x = randreal(); 
 		float value_y = randreal();	
@@ -82,8 +73,8 @@ int main(){
 		}
 	}
 	double after = (double)rdtsc();
-	printf("AOS time : %lf\n", ((after - before)/repetition));
-	printf("AOS sum : %f\n", sum) ; 
+	printf("   --->   AOS time : %lf\n", ((after - before)/repetition));
+	printf("   --->   AOS sum : %f\n", sum) ; 
 	
 	// SOA version
 	sum = 0.0 ; 		
@@ -95,8 +86,8 @@ int main(){
 		}
 	}
 	after = (double)rdtsc();
-	printf("SOA time : %lf\n", ((after - before)/repetition));
-	printf("SOA sum : %f\n", sum) ; 
+	printf("   --->   SOA time : %lf\n", ((after - before)/repetition));
+	printf("   --->   SOA sum : %f\n", sum) ; 
 	
 
 	__m256 rx, rp, rs, rx2,  rp2, rs2, rx3, rp3, rs3, rx4,  rp4, rs4 ;	
@@ -118,8 +109,8 @@ int main(){
 		
 	}
 	after = (double)rdtsc();
-	printf("fma intrinsic time : %lf\n", ((after - before)/repetition));
-	printf("fma intrinsic sum : %f\n", sum) ; 	
+	printf("   --->   fma intrinsic time : %lf\n", ((after - before)/repetition));
+	printf("   --->   fma intrinsic sum : %f\n", sum) ; 	
 
 
 	// unrolled fma intrinsic version 
@@ -143,8 +134,8 @@ int main(){
 		}	
 	}
 	after = (double)rdtsc();
-	printf("unrolled fma intrinsic time : %lf\n", ((after - before)/repetition));
-	printf("unrolled fma intrinsic sum : %f\n", sum) ; 
+	printf("   --->   unrolled fma intrinsic time : %lf\n", ((after - before)/repetition));
+	printf("   --->   unrolled fma intrinsic sum : %f\n", sum) ; 
 	
 	
 	// double unrolled fma intrinsic version 
@@ -182,8 +173,8 @@ int main(){
 		
 	}
 	after = (double)rdtsc();
-	printf("double unrolled fma intrinsic time : %lf\n", ((after - before)/repetition));
-	printf("double unrolled fma intrinsic sum : %f\n", sum) ; 	
+	printf("   --->   double unrolled fma intrinsic time : %lf\n", ((after - before)/repetition));
+	printf("   --->   double unrolled fma intrinsic sum : %f\n", sum) ; 	
 
 	
 	// quadruple unrolled fma intrinsic version 
@@ -241,8 +232,8 @@ int main(){
 		
 	}
 	after = (double)rdtsc();
-	printf("quadruple unrolled fma intrinsic time : %lf\n", ((after - before)/repetition));
-	printf("quadruple  unrolled fma intrinsic sum : %f\n", sum) ; 
+	printf("   --->   quadruple unrolled fma intrinsic time : %lf\n", ((after - before)/repetition));
+	printf("   --->   quadruple  unrolled fma intrinsic sum : %f\n", sum) ; 
 
 }
 
