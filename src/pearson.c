@@ -8,7 +8,7 @@ int n = 10240 ;
 int repetition = 100000; 
 
 typedef struct{
-	float x , y  ; 
+	double x , y  ; 
 } vector ;
 
 
@@ -50,8 +50,8 @@ int main(){
 	v_aos = malloc(n * sizeof(vector));
 	v_x = malloc(n * sizeof(double)) ; 
 	v_y = malloc(n * sizeof(double)) ; 	
-	v_x_al = aligned_alloc(n, n * sizeof(double)) ; 
-	v_y_al = aligned_alloc(n, n * sizeof(double)) ; 
+	v_x_al = aligned_alloc(64, n * sizeof(double)) ; 
+	v_y_al = aligned_alloc(64, n * sizeof(double)) ; 
 	asx = aligned_alloc(64, 64*sizeof(double));	
 	asy = aligned_alloc(64, 64*sizeof(double));	
 	asxy = aligned_alloc(64, 64*sizeof(double));	
@@ -104,11 +104,11 @@ int main(){
 		num = 0.0 ;
 		den = 0.0 ; 	
 		for (int i = 0 ; i < n ; i++){
-			sum_xy += v_aos[i].x * v_aos[i].y ;
-			sum_x += v_aos[i].x ;
-			sum_x_2 += v_aos[i].x * v_aos[i].x ;		
-			sum_y += v_aos[i].y ;
-			sum_y_2 += v_aos[i].y * v_aos[i].y ;
+			sum_xy += (double)v_aos[i].x * (double)v_aos[i].y ;
+			sum_x += (double)v_aos[i].x ;
+			sum_x_2 += (double)v_aos[i].x * (double)v_aos[i].x ;		
+			sum_y += (double)v_aos[i].y ;
+			sum_y_2 += (double)v_aos[i].y * (double)v_aos[i].y ;
 			//printf(": %f\n", v_aos[i].x) ; 			
 		}
 		num = n * sum_xy - sum_x * sum_y ; 
